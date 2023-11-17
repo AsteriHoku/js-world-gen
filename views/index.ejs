@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+		<head>
+			 	<title><% title %></title>
+				<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+				<link rel="stylesheet" href="/css/js-world-gen.css">
+				<script type="text/javascript" src="/js/js-world-gen.js" defer></script>
+
+				<script type="text/javascript">
+					document.addEventListener('DOMContentLoaded', () => {
+						Game.logic.push(function() {
+							// loop through your cells and do whatever logic you want here.
+							for ( let x = 0; x < Game.cells.length; ++x ) {
+								for ( let y = 0; y < Game.cells[x].length; ++y ) {
+									// whatever you want to do for your game
+									const cell = Game.cells[x][y];
+
+									if ( cell.state === 'dying' ) {
+										cell.state = 'dead';
+									}
+
+									if ( cell.state === 'alive' ) {
+										cell.state = 'dying';
+									} 
+								}
+							}
+						});
+					});
+				</script>
+		</head>
+		<body>
+			<div class="row">
+				<div class="col-7">
+					<canvas id="world"></canvas>
+				</div>
+				<div class="col-3">
+					<h3>Game Stuff</h3>
+					<button class="btn btn-primary" onclick="Game.run();">Run Logic</button>
+					<button class="btn btn-primary" onclick="Game.one_tick();">Run One</button>
+					<br><br>
+					<button class="btn btn-secondary" onclick="Game.pause();">Pause</button>
+					<button class="btn btn-warning" onclick="Game.reset();">Reset</button>
+					<hr>
+					<pre style="font-size:10px;">
+Game.logic.push(function() {
+	// loop through your cells and do whatever logic you want here.
+	for ( let x = 0; x < Game.cells.length; ++x ) {
+		for ( let y = 0; y < Game.cells[x].length; ++y ) {
+			// whatever you want to do for your game
+			const cell = Game.cells[x][y];
+			if ( cell.state === 'dying' ) {
+				cell.state = 'dead';
+			}
+
+			if ( cell.state === 'alive' ) {
+				cell.state = 'dying';
+			} 
+		}
+	}
+}
+</pre>
+				</div>
+				<div class="col-1"></div>
+
+			</div>
+		</body>
+</html>
