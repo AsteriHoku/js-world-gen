@@ -147,12 +147,12 @@ const Game = {
 
 	change_cell: function(ev) {
 		const cell = Game.mouse_to_cell(ev);
-		if ( cell.state === 'new' || cell.state === 'dead' ) {
-			cell.state = 'alive';
-		} else if ( cell.state === 'alive' ) {
-			cell.state = 'dying';
-		} else if ( cell.state === 'dying' ) {
+		if ( cell.state === 'alive' ) {
 			cell.state = 'dead';
+		//} else if ( cell.state === 'alive' ) {
+		//	cell.state = 'dying';
+		//} else if ( cell.state === 'dying' ) {
+		//	cell.state = 'dead';
 		}
 
 		Game.render();
@@ -174,8 +174,7 @@ const Game = {
 const CellColors = {
 	new: Game.empty_color,
 	alive: '#77aa77',
-	dying: '#773333',
-	dead: Game.empty_color,
+	dead: '#773333',
 };
 
 function Cell(x, y, color) {
@@ -183,7 +182,7 @@ function Cell(x, y, color) {
 	this.hover = false;
 	this.x = x;
 	this.y = y;
-	this.state = 'new';
+	this.state = 'alive';
 
 	this.color = color;
 

@@ -13,10 +13,9 @@
 			//Game.cells[0][0].state = 'dead';
 			//Game.cells[0][1].state = 'dead';
 			//Game.cells[0][2].state = 'dead';
-			console.log(`Length is ${Game.cells.length} and width is ${Game.cells[0].length}`);
 
-			for ( let x = 0; x < Game.cells.length-1; ++x ) {
-				for ( let y = 0; y < Game.cells[x].length-1; ++y ) {
+			for ( let x = 0; x < Game.cells.length; ++x ) {
+				for ( let y = 0; y < Game.cells[x].length; ++y ) {
 					let liveCount = 0;
 					const cell = Game.cells[x][y];
 
@@ -91,7 +90,7 @@
                             }
                         } //end if x=0 left side checks
                         
-                        
+                        //right side of board checks
                         if (x === Game.cells.length-1) {
                             //top corner
                             if (y === 0) {
@@ -133,10 +132,10 @@
                                     liveCount++;
                                 }
                             }
-                        //end if x=Game.cells.length-1
+                        //end if x=Game.cells.length-1 right side of board checks
                         //all corners should be accounted for by now
                         //start y=0
-                        } else if (y === 0){
+                        } else if (y === 0 && x != 0 && x != Game.cells.length-1){
                             //checks for left side of the board
                             if (Game.cells[x+1][y+1].state === 'alive') {
                                 liveCount++;
@@ -153,7 +152,7 @@
                             if (Game.cells[x][y+1].state === 'alive') {
                                 liveCount++;
                             }
-                        } else if (y === Game.cells[x].length-1) {
+                        } else if (y === Game.cells[x].length-1 && x != 0 && x != Game.cells.length-1) {
                             //checks for right side of the board
                             if (Game.cells[x+1][y].state === 'alive') {
                                 liveCount++;
@@ -212,7 +211,7 @@
         <button class="btn btn-warning" onclick="Game.reset();">Reset</button>
         <hr>
         <pre style="font-size:10px;">
-Game.logic.push(function() {
+<!-- Game.logic.push(function() {
 	// loop through your cells and do whatever logic you want here.
 	for ( let x = 0; x < Game.cells.length; ++x ) {
 		for ( let y = 0; y < Game.cells[x].length; ++y ) {
@@ -227,7 +226,7 @@ Game.logic.push(function() {
 			} 
 		}
 	}
-}
+} -->
         </pre>
     </div>
     <div class="col-1"></div>
