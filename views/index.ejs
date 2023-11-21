@@ -50,49 +50,49 @@
 						}
 					} else { //checks for all cells that are on the edge of the board
 					    //all checks for the left side of the board
-                        if (x === 0) {
+                        if (x === 0 && y === 0) {
                             //top corner
-                            if (y === 0) {
-                                if (Game.cells[x+1][y+1].state === 'alive') {
-                                    liveCount++;
-                                }
-                                if (Game.cells[x+1][y].state === 'alive') {
-                                    liveCount++;
-                                }
-                                if (Game.cells[x][y+1].state === 'alive') {
-                                    liveCount++;
-                                }
-                            //bottom corner
-                            } else if (y === Game.cells[x].length - 1) {
-                                if (Game.cells[x+1][y].state === 'alive') {
-                                    liveCount++;
-                                }
-                                if (Game.cells[x+1][y-1].state === 'alive') {
-                                    liveCount++;
-                                }
-                                if (Game.cells[x][y-1].state === 'alive') {
-                                    liveCount++;
-                                }
-                            //else all other x=0 checks
-                            } else {
-                                if (Game.cells[x+1][y+1].state === 'alive') {
-                                    liveCount++;
-                                }
-                                if (Game.cells[x+1][y].state === 'alive') {
-                                    liveCount++;
-                                }
-                                if (Game.cells[x+1][y-1].state === 'alive') {
-                                    liveCount++;
-                                }
-                                if (Game.cells[x][y+1].state === 'alive') {
-                                    liveCount++;
-                                }
-                                if (Game.cells[x][y-1].state === 'alive') {
-                                    liveCount++;
-                                }
+                            if (Game.cells[x+1][y+1].state === 'alive') {
+                                liveCount++;
                             }
-                        //end if x=0
-                        } else if (x === Game.cells.length-1) {
+                            if (Game.cells[x+1][y].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x][y+1].state === 'alive') {
+                                liveCount++;
+                            }
+                        } else if ( x === 0 && y === Game.cells[x].length-1) {
+                            //bottom corner
+                            if (Game.cells[x+1][y].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x+1][y-1].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x][y-1].state === 'alive') {
+                                liveCount++;
+                            }
+                        } else if (x === 0 && y != 0 && y != Game.cells[x].length-1) {
+                            //all other left side checks
+                            if (Game.cells[x+1][y+1].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x+1][y].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x+1][y-1].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x][y+1].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x][y-1].state === 'alive') {
+                                liveCount++;
+                            }
+                        } //end if x=0 left side checks
+                        
+                        
+                        if (x === Game.cells.length-1) {
                             //top corner
                             if (y === 0) {
                                 if (Game.cells[x-1][y+1].state === 'alive') {
