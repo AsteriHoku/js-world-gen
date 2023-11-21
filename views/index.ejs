@@ -1,47 +1,217 @@
 <!DOCTYPE html>
 <html>
-		<head>
-			 	<title><% title %></title>
-				<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-				<link rel="stylesheet" href="/css/js-world-gen.css">
-				<script type="text/javascript" src="/js/js-world-gen.js" defer></script>
+<head>
+        <title><% title %></title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/js-world-gen.css">
+        <script type="text/javascript" src="/js/js-world-gen.js" defer></script>
 
-				<script type="text/javascript">
-					document.addEventListener('DOMContentLoaded', () => {
-						Game.logic.push(function() {
-							// loop through your cells and do whatever logic you want here.
-							for ( let x = 0; x < Game.cells.length; ++x ) {
-								for ( let y = 0; y < Game.cells[x].length; ++y ) {
-									// whatever you want to do for your game
-									const cell = Game.cells[x][y];
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                Game.logic.push(function() {
+            //set the beginning state of the cells
+			//Game.cells[0][0].state = 'dead';
+			//Game.cells[0][1].state = 'dead';
+			//Game.cells[0][2].state = 'dead';
+			console.log(`Length is ${Game.cells.length} and width is ${Game.cells[0].length}`);
 
-									if ( cell.state === 'dying' ) {
-										cell.state = 'dead';
-									}
+			for ( let x = 0; x < Game.cells.length-1; ++x ) {
+				for ( let y = 0; y < Game.cells[x].length-1; ++y ) {
+					let liveCount = 0;
+					const cell = Game.cells[x][y];
 
-									if ( cell.state === 'alive' ) {
-										cell.state = 'dying';
-									} 
-								}
-							}
-						});
-					});
-				</script>
-		</head>
-		<body>
-			<div class="row">
-				<div class="col-7">
-					<canvas id="world"></canvas>
-				</div>
-				<div class="col-3">
-					<h3>Game Stuff</h3>
-					<button class="btn btn-primary" onclick="Game.run();">Run Logic</button>
-					<button class="btn btn-primary" onclick="Game.one_tick();">Run One</button>
-					<br><br>
-					<button class="btn btn-secondary" onclick="Game.pause();">Pause</button>
-					<button class="btn btn-warning" onclick="Game.reset();">Reset</button>
-					<hr>
-					<pre style="font-size:10px;">
+                    //checks for all cells that are NOT on the edge of the board
+                    //todo sarah refactor into a switch? giant if || ?
+                    //todo sarah these checks need to be refactored so they definitely go into the correct if for every single situation
+					if (x != 0 && x != Game.cells.length-1 && y != 0 && y != Game.cells[x].length-1) {
+						if (Game.cells[x+1][y+1].state === 'alive') {
+							liveCount++;
+						}
+						if (Game.cells[x+1][y].state === 'alive') {
+							liveCount++;
+						}
+						if (Game.cells[x+1][y-1].state === 'alive') {
+							liveCount++;
+						}
+						if (Game.cells[x-1][y+1].state === 'alive') {
+							liveCount++;
+						}
+						if (Game.cells[x-1][y].state === 'alive') {
+							liveCount++;
+						}
+						if (Game.cells[x-1][y-1].state === 'alive') {
+							liveCount++;
+						}
+						if (Game.cells[x][y+1].state === 'alive') {
+							liveCount++;
+						}
+						if (Game.cells[x][y-1].state === 'alive') {
+							liveCount++;
+						}
+					} else { //checks for all cells that are on the edge of the board
+					    //all checks for the left side of the board
+                        if (x === 0) {
+                            //top corner
+                            if (y === 0) {
+                                if (Game.cells[x+1][y+1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x+1][y].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x][y+1].state === 'alive') {
+                                    liveCount++;
+                                }
+                            //bottom corner
+                            } else if (y === Game.cells[x].length - 1) {
+                                if (Game.cells[x+1][y].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x+1][y-1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x][y-1].state === 'alive') {
+                                    liveCount++;
+                                }
+                            //else all other x=0 checks
+                            } else {
+                                if (Game.cells[x+1][y+1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x+1][y].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x+1][y-1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x][y+1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x][y-1].state === 'alive') {
+                                    liveCount++;
+                                }
+                            }
+                        //end if x=0
+                        } else if (x === Game.cells.length-1) {
+                            //top corner
+                            if (y === 0) {
+                                if (Game.cells[x-1][y+1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x-1][y].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x][y+1].state === 'alive') {
+                                    liveCount++;
+                                }
+                            //bottom corner
+                            } else if (y === Game.cells[x].length - 1) {
+                                if (Game.cells[x-1][y].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x-1][y-1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x][y-1].state === 'alive') {
+                                    liveCount++;
+                                }
+                            //all other checks for the right side of the board
+                            } else {
+                                if (Game.cells[x-1][y+1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x-1][y].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x-1][y-1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x][y+1].state === 'alive') {
+                                    liveCount++;
+                                }
+                                if (Game.cells[x][y-1].state === 'alive') {
+                                    liveCount++;
+                                }
+                            }
+                        //end if x=Game.cells.length-1
+                        //all corners should be accounted for by now
+                        //start y=0
+                        } else if (y === 0){
+                            //checks for left side of the board
+                            if (Game.cells[x+1][y+1].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x+1][y].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x-1][y+1].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x-1][y].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x][y+1].state === 'alive') {
+                                liveCount++;
+                            }
+                        } else if (y === Game.cells[x].length-1) {
+                            //checks for right side of the board
+                            if (Game.cells[x+1][y].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x+1][y-1].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x-1][y].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x-1][y-1].state === 'alive') {
+                                liveCount++;
+                            }
+                            if (Game.cells[x][y-1].state === 'alive') {
+                                liveCount++;
+                            }
+                        }
+					}
+
+					//score!
+					//total live count for the cell and compute based on alive/dead rules
+					if ( cell.state === 'dead' && liveCount === 3 ) {
+						//Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction
+						cell.state = 'alive';
+					}
+
+					if ( cell.state === 'alive'){
+						if ( liveCount < 2 ) {
+							//Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+							cell.state = 'dead';
+						} else if ( liveCount === 2 || liveCount === 3 ) {
+							//Any live cell with two or three live neighbours lives on to the next generation.
+							cell.state = 'alive';
+						} else if ( liveCount > 3 ) {
+							//Any live cell with more than three live neighbours dies, as if by overpopulation.
+							cell.state = 'dead';
+						}
+					}
+				}
+			}
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="row">
+    <div class="col-7">
+        <canvas id="world"></canvas>
+    </div>
+    <div class="col-3">
+        <h3>Game Stuff</h3>
+        <button class="btn btn-primary" onclick="Game.run();">Run Logic</button>
+        <button class="btn btn-primary" onclick="Game.one_tick();">Run One</button>
+        <br><br>
+        <button class="btn btn-secondary" onclick="Game.pause();">Pause</button>
+        <button class="btn btn-warning" onclick="Game.reset();">Reset</button>
+        <hr>
+        <pre style="font-size:10px;">
 Game.logic.push(function() {
 	// loop through your cells and do whatever logic you want here.
 	for ( let x = 0; x < Game.cells.length; ++x ) {
@@ -58,10 +228,9 @@ Game.logic.push(function() {
 		}
 	}
 }
-</pre>
-				</div>
-				<div class="col-1"></div>
-
-			</div>
-		</body>
+        </pre>
+    </div>
+    <div class="col-1"></div>
+    </div>
+</body>
 </html>

@@ -14,4 +14,4 @@ app.get('/', (req, res) => {
 	res.render('index');
 });
 
-app.listen(process.env.PORT || 3636, () => console.log('Server started'));
+app.listen(process.env.PORT || 3636, () => console.log('Server started - port 3636'));
