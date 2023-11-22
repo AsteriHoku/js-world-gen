@@ -9,19 +9,15 @@
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', () => {
                 Game.logic.push(function() {
-            //set the beginning state of the cells
-			//Game.cells[0][0].state = 'dead';
-			//Game.cells[0][1].state = 'dead';
-			//Game.cells[0][2].state = 'dead';
 
+            //todo sarah refactor into a switch? giant if || ?
+            //todo sarah these checks need to be refactored so they definitely go into the correct if for every single situation
 			for ( let x = 0; x < Game.cells.length; ++x ) {
 				for ( let y = 0; y < Game.cells[x].length; ++y ) {
 					let liveCount = 0;
 					const cell = Game.cells[x][y];
 
-                    //checks for all cells that are NOT on the edge of the board
-                    //todo sarah refactor into a switch? giant if || ?
-                    //todo sarah these checks need to be refactored so they definitely go into the correct if for every single situation
+                    //checks for all cells that ARE NOT on the edge of the board
 					if (x != 0 && x != Game.cells.length-1 && y != 0 && y != Game.cells[x].length-1) {
 						if (Game.cells[x+1][y+1].state === 'alive') {
 							liveCount++;
@@ -47,7 +43,8 @@
 						if (Game.cells[x][y-1].state === 'alive') {
 							liveCount++;
 						}
-					} else { //checks for all cells that are on the edge of the board
+                    //checks for all cells that are on the edge of the board
+					} else {
 					    //all checks for the left side of the board
                         if (x === 0 && y === 0) {
                             //top corner
@@ -176,19 +173,25 @@
 					//total live count for the cell and compute based on alive/dead rules
 					if ( cell.state === 'dead' && liveCount === 3 ) {
 						//Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction
+                        const prev = cell.state;
 						cell.state = 'alive';
+                        console.log(`1 --> ${liveCount === 3 && prev === 'dead' && cell.state === 'alive'}`);
 					}
 
 					if ( cell.state === 'alive'){
 						if ( liveCount < 2 ) {
 							//Any live cell with fewer than two live neighbours dies, as if by underpopulation.
 							cell.state = 'dead';
+
+                            console.log(`2 --> ${liveCount < 2 && cell.state === 'dead'}`);
 						} else if ( liveCount === 2 || liveCount === 3 ) {
 							//Any live cell with two or three live neighbours lives on to the next generation.
-							cell.state = 'alive';
+							cell.state = 'alive';//todo Sarah unnec essary
+                            console.log(`3 --> ${(liveCount === 2 || liveCount === 3) && cell.state === 'alive'}`);
 						} else if ( liveCount > 3 ) {
 							//Any live cell with more than three live neighbours dies, as if by overpopulation.
 							cell.state = 'dead';
+                            console.log(`4 --> ${liveCount > 3 && cell.state === 'dead'}`);
 						}
 					}
 				}
